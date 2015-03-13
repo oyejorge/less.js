@@ -1,6 +1,5 @@
 var path = require('path'),
-    fs = require('fs'),
-    sys = require('util');
+    fs = require('fs');
 
 var less = require('../lib/less');
 var file = path.join(__dirname, 'benchmark.less');
@@ -13,9 +12,9 @@ fs.readFile(file, 'utf8', function (e, data) {
     console.log("Benchmarking...\n", path.basename(file) + " (" +
              parseInt(data.length / 1024) + " KB)", "");
 
-    start = new(Date);
+    start = new Date();
 
-    new(less.Parser)({ optimization: 2 }).parse(data, function (err, tree) {
+    new less.Parser().parse(data, function (err, tree) {
         end = new Date();
 
         total = end - start;

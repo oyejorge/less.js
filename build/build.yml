@@ -13,18 +13,16 @@
 
 # Less.js Lib
 lib: lib/less
-
+lib_source_map: 'lib/source-map'
 
 # =================================
 # General
 # =================================
 prepend:
-  browser: ['build/require.js', 'build/browser-header.js']
-  rhino:   ['build/require-rhino.js', 'build/rhino-header.js']
+  rhino:   ['build/require-rhino.js', 'build/rhino-header.js', 'build/rhino-modules.js']
 
 append:
   amd:     build/amd.js
-  browser: <%= build.lib %>/browser.js
   rhino:   <%= build.lib %>/rhino.js
 
 
@@ -39,7 +37,7 @@ less:
   colors           : <%= build.lib %>/colors.js
   tree             : <%= build.lib %>/tree.js
   treedir          : <%= build.lib %>/tree/*.js # glob all files in ./lib/less/tree directory
-  env              : <%= build.lib %>/env.js
+  env              : <%= build.lib %>/contexts.js
   visitor          : <%= build.lib %>/visitor.js
   import_visitor   : <%= build.lib %>/import-visitor.js
   join             : <%= build.lib %>/join-selector-visitor.js
@@ -47,36 +45,6 @@ less:
   extend_visitor   : <%= build.lib %>/extend-visitor.js
   browser          : <%= build.lib %>/browser.js
   source_map_output: <%= build.lib %>/source-map-output.js
-
-
-# =================================
-# Browser build
-# =================================
-
-# <%= build.browser %>
-browser:
-
-  # prepend utils
-  - <%= build.prepend.browser %>
-
-  # core
-  - <%= build.less.parser %>
-  - <%= build.less.functions %>
-  - <%= build.less.colors %>
-  - <%= build.less.tree %>
-  - <%= build.less.treedir %> # glob all files
-  - <%= build.less.env %>
-  - <%= build.less.visitor %>
-  - <%= build.less.import_visitor %>
-  - <%= build.less.join %>
-  - <%= build.less.to_css_visitor %>
-  - <%= build.less.extend_visitor %>
-  - <%= build.less.source_map_output %>
-
-  # append browser-specific code
-  - <%= build.append.browser %>
-  - <%= build.append.amd %>
-
 
 # =================================
 # Rhino build
@@ -89,19 +57,22 @@ rhino:
 
   # core
   - <%= build.less.parser %>
+  - <%= build.less.functions %>
+  - <%= build.less.colors %>
+  - <%= build.less.tree %>
+  - <%= build.less.treedir %> # glob all files
   - <%= build.less.env %>
   - <%= build.less.visitor %>
   - <%= build.less.import_visitor %>
   - <%= build.less.join %>
   - <%= build.less.to_css_visitor %>
   - <%= build.less.extend_visitor %>
-  - <%= build.less.functions %>
-  - <%= build.less.colors %>
-  - <%= build.less.tree %>
-  - <%= build.less.treedir %> # glob all files
   - <%= build.less.source_map_output %>
+  - <%= build.source_map %>
 
-  # append rhino-specific code
+
+# <%= build.rhinolessc %>
+rhinolessc:
   - <%= build.append.rhino %>
 
 
@@ -124,6 +95,7 @@ tree:
   - <%= build.lib %>/tree/color.js
   - <%= build.lib %>/tree/comment.js
   - <%= build.lib %>/tree/condition.js
+  - <%= build.lib %>/tree/detached-ruleset.js
   - <%= build.lib %>/tree/dimension.js
   - <%= build.lib %>/tree/directive.js
   - <%= build.lib %>/tree/element.js
@@ -133,15 +105,26 @@ tree:
   - <%= build.lib %>/tree/javascript.js
   - <%= build.lib %>/tree/keyword.js
   - <%= build.lib %>/tree/media.js
-  - <%= build.lib %>/tree/mixin.js
+  - <%= build.lib %>/tree/mixin-call.js
   - <%= build.lib %>/tree/negative.js
   - <%= build.lib %>/tree/operation.js
   - <%= build.lib %>/tree/paren.js
   - <%= build.lib %>/tree/quoted.js
   - <%= build.lib %>/tree/rule.js
   - <%= build.lib %>/tree/ruleset.js
+  - <%= build.lib %>/tree/ruleset-call.js
   - <%= build.lib %>/tree/selector.js
   - <%= build.lib %>/tree/unicode-descriptor.js
   - <%= build.lib %>/tree/url.js
   - <%= build.lib %>/tree/value.js
   - <%= build.lib %>/tree/variable.js
+
+# =================================
+# source-map build
+# =================================
+
+# <%= build.source_map %>
+source_map:
+  - <%= build.lib_source_map %>/source-map-header.js
+  - <%= build.lib_source_map %>/source-map-0.1.31.js
+  - <%= build.lib_source_map %>/source-map-footer.js

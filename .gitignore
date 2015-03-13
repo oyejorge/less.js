@@ -13,8 +13,14 @@ npm-debug.log
 # project-specific
 tmp
 test/browser/less.js
+test/sourcemaps/**/*.map
 test/sourcemaps/*.map
 test/sourcemaps/*.css
+test/less-bom
 
 # grunt
 .grunt
+
+# gradle
+.gradle
+out
